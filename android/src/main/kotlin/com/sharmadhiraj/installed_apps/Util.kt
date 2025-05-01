@@ -25,8 +25,8 @@ class Util {
             val packageInfo = packageManager.getPackageInfo(app.packageName, 0)
             map["version_name"] = packageInfo.versionName
             map["version_code"] = getVersionCode(packageInfo)
-            map["built_with"] = platformType?.value ?: BuiltWithUtil.getPlatform(packageInfo.applicationInfo)
-            map["installed_timestamp"] = File(packageInfo.applicationInfo.sourceDir).lastModified()
+            map["built_with"] = platformType?.value ?: packageInfo.applicationInfo?.let { BuiltWithUtil.getPlatform(it) } ?: "unknown"
+            map["installed_timestamp"] = packageInfo.applicationInfo?.sourceDir?.let { File(it).lastModified() } ?: 0L
             return map
         }
 
